@@ -5,6 +5,8 @@ from sklearn.metrics import accuracy_score
 
 '''
 Load data
+features: BERT embeddings, gender
+regressand: Change in hedge words
 split into test and training
 
 '''
@@ -15,7 +17,7 @@ test_split = .2
 '''
 basic code
 # split and train
-x_train, x_test, y_train, y_test = train_test_split(features, regressor, test_size=test_size, random_state=seed)
+x_train, x_test, y_train, y_test = train_test_split(features, regressand, test_size=test_size, random_state=seed)
 basic = XGBClassifer()
 basic.fit(x_train, y_train)
 y_pred = basic.predict(x_test)
