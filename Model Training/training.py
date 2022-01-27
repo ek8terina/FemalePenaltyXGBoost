@@ -19,19 +19,27 @@ test_split = .2
 basic code
 # split and train
 x_train, x_test, y_train, y_test = train_test_split(features, regressand, test_size=test_size, random_state=seed)
-basic = XGBClassifer()
+basic = XGBRegressor()
 basic.fit(x_train, y_train)
 y_pred = basic.predict(x_test)
 
 # get accuracy
 accuracy = accuracy_score(y_test, predictions)
 print("Here is accuracy of most basic XGBoost model: " + accuracy)
+
+# save model
+basic.save_model("../Models/basic_model.txt")       # save as .txt, smaller than .json format
+
+# load model
+# basic_loaded = xgb.XGBRegressor()
+# basic_loaded.load_model("../Models/basic_model.txt")
 '''
 
 '''
 slightly more in-depth
 test = [(x_train, y_train), (x_test, y_test)]
-model_2 = XGBClassifer()
+model_2 = XGBRegressor()
+# add early_stopping_rounds=z param
 model_2.fit(x_train, y_train, eval_metric="rmse", eval_set=test, verbose=True)      #print how model is doing
 
 training_results = model_2.evals_result()
