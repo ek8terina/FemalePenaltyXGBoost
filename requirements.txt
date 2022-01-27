@@ -2,3 +2,4 @@ numpy
 xgboost
 sklearn
 pandas
+matplotlib
