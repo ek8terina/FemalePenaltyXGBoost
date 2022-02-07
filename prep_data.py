@@ -36,6 +36,7 @@ merge_data = pd.read_csv("./Data/raw_data/merge_data/combined_dataset_full_outpu
 merge_data = merge_data.drop_duplicates(subset=['ArticleID'])
 # left merge
 final_data = final_data.merge(merge_data, how='left', on='ArticleID')
+final_data['publicationYear'] = [int(x) for x in final_data['publicationYear']]
 
 # merge hedges in
 kyle_hedges = pd.read_csv("./Data/raw_data/hedge/kyle.csv",
