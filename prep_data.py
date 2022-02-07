@@ -28,6 +28,15 @@ embedding_matrix = read_into_embed_matrix(raw_data['embedding'])
 final_data = pd.concat([raw_data[["ArticleID", "AuthorGend"]], pd.DataFrame(embedding_matrix)], axis=1)
 # drop duplicates
 final_data = final_data.drop_duplicates(subset=['ArticleID'])
+
+# merge additional vars in
+merge_data = pd.read_csv("./Data/raw_data/merge_data/combined_dataset_full_output.csv",
+                         usecols=['ArticleID', 'publicationYear', 'earlyVersionSource'])
+# drop duplicates
+merge_data = merge_data.drop_duplicates(subset=['ArticleID'])
+# left merge
+final_data = final_data.merge(merge_data, how='left', on='ArticleID')
+
 # merge hedges in
 kyle_hedges = pd.read_csv("./Data/raw_data/hedge/kyle.csv",
                           usecols=['ArticleID', 'hedge_abstract_early', 'hedge_abstract_published'])
