@@ -38,7 +38,7 @@ merge_data = merge_data.drop_duplicates(subset=['ArticleID'])
 final_data = final_data.merge(merge_data, how='left', on='ArticleID')
 final_data['publicationYear'] = [int(x) for x in final_data['publicationYear']]
 
-# merge # of words in
+# merge # of original words in
 bow_data = pd.read_csv("./Data/raw_data/bow/Kyle/abstract_early_bow.csv",
                          usecols=['ArticleID', 'word_number'])
 # drop duplicates
@@ -46,6 +46,15 @@ bow_data = bow_data.drop_duplicates(subset=['ArticleID'])
 # left merge
 final_data = final_data.merge(bow_data, how='left', on='ArticleID')
 final_data['word_number'] = [int(x) for x in final_data['word_number']]
+
+# merge # of published words in
+bow_data = pd.read_csv("./Data/raw_data/bow/Kyle/abstract_published_bow.csv", usecols=['ArticleID', 'word_number'])
+bow_data = bow_data.rename(columns={'word_number': 'word_number_pub'})
+# drop duplicates
+bow_data = bow_data.drop_duplicates(subset=['ArticleID'])
+# left merge
+final_data = final_data.merge(bow_data, how='left', on='ArticleID')
+final_data['word_number_pub'] = [int(x) for x in final_data['word_number_pub']]
 
 # merge hedges in
 kyle_hedges = pd.read_csv("./Data/raw_data/hedge/kyle.csv",
@@ -61,7 +70,8 @@ final_data['hedge_abstract_change'] = list(np.subtract(np.array(final_data['hedg
 final_data.to_csv("./Data/train_test_data/abstracts_kyle.csv")
 
 # drop any abstract that are >600 words
-final_data_few_words = final_data[final_data['word_number'] < 600]
-final_data_filtered = final_data_few_words[final_data_few_words['word_number'] > 59]
+final_data_few_words = final_data[(final_data['word_number'] < 600) & (final_data['word_number_pub'] < 600)]
+final_data_filtered = final_data_few_words[(final_data_few_words['word_number'] > 59) &
+                                           (final_data_few_words['word_number_pub'] > 59)]
 print(len(final_data_filtered['ArticleID']))
 final_data_filtered.to_csv("./Data/train_test_data/abstracts_kyle.csv")
