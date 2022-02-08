@@ -31,12 +31,21 @@ final_data = final_data.drop_duplicates(subset=['ArticleID'])
 
 # merge additional vars in
 merge_data = pd.read_csv("./Data/raw_data/merge_data/combined_dataset_full_output.csv",
-                         usecols=['ArticleID', 'publicationYear', 'earlyVersionSource'])
+                         usecols=['ArticleID', 'publicationYear'])
 # drop duplicates
 merge_data = merge_data.drop_duplicates(subset=['ArticleID'])
 # left merge
 final_data = final_data.merge(merge_data, how='left', on='ArticleID')
 final_data['publicationYear'] = [int(x) for x in final_data['publicationYear']]
+
+# merge # of words in
+bow_data = pd.read_csv("./Data/raw_data/bow/Kyle/abstract_early_bow.csv",
+                         usecols=['ArticleID', 'word_number'])
+# drop duplicates
+bow_data = bow_data.drop_duplicates(subset=['ArticleID'])
+# left merge
+final_data = final_data.merge(bow_data, how='left', on='ArticleID')
+final_data['word_number'] = [int(x) for x in final_data['word_number']]
 
 # merge hedges in
 kyle_hedges = pd.read_csv("./Data/raw_data/hedge/kyle.csv",
