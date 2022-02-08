@@ -59,3 +59,8 @@ final_data['hedge_abstract_change'] = list(np.subtract(np.array(final_data['hedg
                                             np.array(final_data['hedge_abstract_early'])))
 # save to final
 final_data.to_csv("./Data/train_test_data/abstracts_kyle.csv")
+
+# drop any abstract that are >600 words
+final_data_few_words = final_data[final_data['word_number'] < 600]
+print(len(final_data_few_words['ArticleID']))
+final_data_few_words.to_csv("./Data/train_test_data/abstracts_kyle.csv")
