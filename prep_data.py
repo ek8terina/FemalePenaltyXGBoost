@@ -73,5 +73,14 @@ final_data.to_csv("./Data/train_test_data/abstracts_kyle.csv")
 final_data_few_words = final_data[(final_data['word_number'] < 600) & (final_data['word_number_pub'] < 600)]
 final_data_filtered = final_data_few_words[(final_data_few_words['word_number'] > 59) &
                                            (final_data_few_words['word_number_pub'] > 59)]
+print("nrow for word number filtered data: ")
+print(len(final_data_filtered['ArticleID']))
+
+# filter by word number change as well
+# drop anything that has a change >150
+final_data_filtered['word_number_change'] = final_data_filtered["word_number_pub"] - final_data_filtered["word_number"]
+final_data_filtered = final_data_filtered[((final_data_filtered['word_number_change'] < 150) &
+                                           (final_data_filtered['word_number_change'] > -150))]
+print("nrow for CHANGE in word number filtered data: ")
 print(len(final_data_filtered['ArticleID']))
 final_data_filtered.to_csv("./Data/train_test_data/abstracts_kyle.csv")
