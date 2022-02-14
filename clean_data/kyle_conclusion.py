@@ -2,12 +2,18 @@ from cleaning_funcs import merge_in
 import pandas as pd
 import numpy as np
 
+# read in embeddings file
 raw_data_file = "../Data/raw_data/conclusions_reembedded.csv"
 raw_data = pd.read_csv(raw_data_file)
+# take out first columns
 raw_data = raw_data.iloc[:, 2:]
+
+'''
 # sanity check, print keys:
-# for key in raw_data.keys():     # comment this out if not needed
-#    print(key)                  # comment out
+for key in raw_data.keys():     # comment this out if not needed
+    print(key)                  # comment out
+'''
+
 # check for # obs
 print("nrow for raw obs number: ")
 print(len(raw_data['ArticleID']))
